@@ -27,17 +27,19 @@ let videos = [
     },
 ];
 
-export const postUpload =async (req,res)=>{
-    const {title,description,hashtags} = req.body;
-    const video = new Video({
+export const postUpload = async (req, res) => {
+    const { title, description, hashtags } = req.body;
+    const videos = await Video.create({
         title,
         description,
-        hashtags
-    });
-    console.log('video', video)
-    return res.status(200).json(video);
+        hashtags,
+    })
+    console.log('videos', videos)
+    return res.status(200).json(videos);
 };
 
-export const getUpload = async(req,res)=>{
-   
+export const getUpload = async (req, res) => {
+    const videos = await Video.find({});
+    console.log('videos', videos);
+    return res.status(200).json(videos);
 };
