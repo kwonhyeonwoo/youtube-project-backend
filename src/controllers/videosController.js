@@ -1,3 +1,5 @@
+import Video from "../models/Video";
+
 let videos = [
     {
         title: "First Video",
@@ -25,23 +27,17 @@ let videos = [
     },
 ];
 
-export const postUpload = (req,res)=>{
-    const { title } = req.body
-    const newVideo = [
-        {
-            title,
-            rating: 5,
-            comments: 2,
-            createdAt: "just not",
-            views: 1,
-            id: 1,
-        }
-    ]
-    console.log('reqbody', req.body)
-    videos.push(newVideo);
-    return res.json(newVideo)
+export const postUpload =async (req,res)=>{
+    const {title,description,hashtags} = req.body;
+    const video = new Video({
+        title,
+        description,
+        hashtags
+    });
+    console.log('video', video)
+    return res.status(200).json(video);
 };
 
-export const getUpload = (req,res)=>{
-    return res.json(videos);
+export const getUpload = async(req,res)=>{
+   
 };
