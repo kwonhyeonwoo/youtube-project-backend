@@ -1,5 +1,5 @@
 import express from "express";
-import { getUpload, postEdit, postUpload, video } from "../controllers/videosController";
+import { deleteVideo, getUpload, postEdit, postUpload, video, videoSearch } from "../controllers/videosController";
 
 const videosRouter = express();
 
@@ -8,4 +8,6 @@ const videosRouter = express();
 videosRouter.route('/upload').get(getUpload).post(postUpload);
 videosRouter.get('/', video);
 videosRouter.post('/edit', postEdit);
+videosRouter.post('/delete/:id', deleteVideo);
+videosRouter.get('/search', videoSearch);
 export default videosRouter;
