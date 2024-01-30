@@ -1,5 +1,5 @@
 import { Auth } from "../models/Auth";
-import bcrype from "bcrypt";
+import bcrypt from "bcrypt";
 export const authAccount = async (req, res) => {
     const {
         email,
@@ -22,13 +22,21 @@ export const authLogin = async (req, res) => {
             errorMsg: '아이디가 존재하지 않습니다.'
         });
     };
-    const passwordCheck = await bcrype.compare(password, user.password);
+    const passwordCheck = await bcrypt.compare(password, user.password);
     if (!passwordCheck) {
         return res.status(404).json({
             errorMsg: "비밀번호가 일치하지 않습니다."
         });
     };
-    console.log('user', user);
-    console.log('`passwordCheck', passwordCheck)
-    return res.status(200).json();
+  
+    req.session.loggedIn = true;
+    req.session.user = user;
+    await req.session.save();
+
+    console.log('req session',req.session.user)
+    return res.status(200).json(user);
+}
+export const user = async (req,res)=>{
+    const user = req.session.user
+    return res.json(user);
 }
