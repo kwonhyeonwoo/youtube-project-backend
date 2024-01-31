@@ -28,13 +28,16 @@ export const authLogin = async (req, res) => {
             errorMsg: "비밀번호가 일치하지 않습니다."
         });
     };
-  
-    req.session.loggedIn = true;
-    req.session.user = user;
-    await req.session.save();
+   if(user){
+       console.log('iser', user)
+       console.log('req session2', req.session.loggedIn)
+       req.session.loggedIn = true;
+       req.session.user = user;
+       await req.session.save();
+       res.status(200).json(user);
 
-    console.log('req session',req.session.user)
-    return res.status(200).json(user);
+   }
+
 }
 export const user = async (req,res)=>{
     const user = req.session.user
