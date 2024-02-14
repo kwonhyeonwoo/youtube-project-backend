@@ -9,9 +9,7 @@ const authSchema = new mongoose.Schema({
 });
 
 authSchema.pre('save', async function () {
-    console.log('this password', this.password);
     this.password = await bcrypt.hash(this.password, 5);
-    console.log('hash password',)
 })
 export const Auth = mongoose.model("Auth", authSchema);
 
