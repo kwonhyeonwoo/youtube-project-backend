@@ -2,15 +2,18 @@ import Auth from "../models/Auth"
 
 export const account = async (req, res) => {
     const {
-        avatar,
-        name,
-        nickName,
-        email,
-        password
-    } = req.body;
+        body:{
+            avatar,
+            name,
+            nickName,
+            email,
+            password
+        },
+        files 
+    } = req;
+    console.log('fiels',files)
     const existsNickName = await Auth.exists({ nickName });
     const existsEmail = await Auth.exists({ email });
-
     if (existsNickName) {
         return res.status(400).json({
             msg: "중복된 닉네임이 있습니다."
@@ -22,7 +25,7 @@ export const account = async (req, res) => {
         })
     };
     const user = await Auth.create({
-        avatar,
+        // avatar :path ? path : avatar,
         name,
         nickName,
         email,
