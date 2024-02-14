@@ -4,7 +4,7 @@
   "description": "Express Es6 + React ",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec babel-node src/init.js"
+    "dev": "nodemon --exec babel-node src/server.js"
   },
   "author": "kwonhyeonwoo",
   "license": "ISC",
