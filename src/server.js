@@ -18,6 +18,8 @@ app.use(cors({
     origin: "http://localhost:3000"
 }));
 
+// avatar 이미지 파일 경로 설정
+app.use("/uploads",express.static('uploads'))
 app.use('/', rootRouter);
 app.listen(4000, () => {
     console.log('ServerOpen : http://localhost:4000')

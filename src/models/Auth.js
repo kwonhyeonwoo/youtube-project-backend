@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcrypt";
 const authSchema = new mongoose.Schema({
     avatar: { type: String, },
@@ -6,6 +6,9 @@ const authSchema = new mongoose.Schema({
     nickName: { type: String, required: true, unique: true, minlength: 3, maxlength: 9 },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    videos:[
+        { type: Schema.Types.ObjectId , ref: "Video"}
+    ]
 });
 
 authSchema.pre('save', async function () {
