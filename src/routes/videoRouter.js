@@ -1,6 +1,9 @@
 import express from "express";
-import { videoUpload } from "../controllers/videoController";
+import { getVideos, videoUpload } from "../controllers/videoController";
+import { authenticate, videoFileaUpload } from "../middleware";
 
 const videoRouter = express.Router();
 
-videoRouter.post('/upload',videoUpload)
+videoRouter.post('/upload', videoFileaUpload.single('videoUrl'), authenticate, videoUpload);
+videoRouter.get('/', getVideos);
+export default videoRouter

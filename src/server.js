@@ -2,10 +2,11 @@ import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import bodyParser from "body-parser"
+import rootRouter from "./routes/rootRouter.js";
+import videoRouter from "./routes/videoRouter.js";
 
 import "./db.js";
 import "./models/Auth.js";
-import rootRouter from "./routes/rootRouter.js";
 export const app = express();
 
 app.use(bodyParser.json());
@@ -19,8 +20,12 @@ app.use(cors({
 }));
 
 // avatar 이미지 파일 경로 설정
-app.use("/uploads",express.static('uploads'))
+app.use("/uploads", express.static('uploads'))
+app.use("/uploads", express.static('videos'))
 app.use('/', rootRouter);
+app.use('/video', videoRouter);
+
+// node open
 app.listen(4000, () => {
     console.log('ServerOpen : http://localhost:4000')
 })

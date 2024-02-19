@@ -6,14 +6,11 @@ const authSchema = new mongoose.Schema({
     nickName: { type: String, required: true, unique: true, minlength: 3, maxlength: 9 },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    videos:[
-        { type: Schema.Types.ObjectId , ref: "Video"}
+    videos: [
+        { type: Schema.Types.ObjectId, ref: "Video" }
     ]
 });
 
-authSchema.pre('save', async function () {
-    this.password = await bcrypt.hash(this.password, 5);
-})
 export const Auth = mongoose.model("Auth", authSchema);
 
 export default Auth;
