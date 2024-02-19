@@ -58,3 +58,35 @@ export const userProfile = async (req, res) => {
     const profile = await Auth.findById(id).populate('videos');
     return res.status(200).json(profile);
 }
+
+export const authEdit = async(req,res)=>{
+    const {
+        body:{
+            avatar,nickName,email,name
+        },
+        file
+    } = req;
+    const id = req.userId;
+    const existsNickname = await Auth.exists({nickName});
+    const existsEmail = await Auth.exists({email});
+    if(existsNickname){
+        return res.status(400).json({
+            msg:"중복된 닉네임이 있습니다"
+        })
+    }
+    if (existsEmail) {
+        return res.status(401).json({
+            msg: "중복된 이메일이 있습니다"
+        })
+    }
+    let updateData = {};
+    if (file) updateData.avatar = file.path;
+    if (nickName) updateData.nickName = nickName;
+    if (email) updateData.email = email;
+    if (name) updateData.name = name;
+    const authUpdate = await Auth.findByIdAndUpdate(id,{
+        updateData
+    },{new:true})
+    console.log('updata',authUpdate)
+    return res.status(200).json(authUpdate);
+}

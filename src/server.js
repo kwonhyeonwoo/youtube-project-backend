@@ -7,6 +7,7 @@ import videoRouter from "./routes/videoRouter.js";
 
 import "./db.js";
 import "./models/Auth.js";
+import authRouter from "./routes/authRouter.js";
 export const app = express();
 
 app.use(bodyParser.json());
@@ -24,6 +25,7 @@ app.use("/uploads", express.static('uploads'))
 app.use("/uploads", express.static('videos'))
 app.use('/', rootRouter);
 app.use('/video', videoRouter);
+app.use('/auth', authRouter);
 
 // node open
 app.listen(4000, () => {
