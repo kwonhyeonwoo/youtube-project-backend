@@ -59,6 +59,8 @@ export const userProfile = async (req, res) => {
     return res.status(200).json(profile);
 }
 
+
+
 export const authEdit = async (req, res) => {
     const {
         body: {
@@ -67,25 +69,37 @@ export const authEdit = async (req, res) => {
         file
     } = req;
     const id = req.userId;
+    let updateData = req.body;
+
     const existsNickname = await Auth.exists({ nickName });
     const existsEmail = await Auth.exists({ email });
-    if (existsNickname) {
+
+    // 빈 문자열 필드 제거
+    Object.keys(updateData).forEach(key => {
+        if (updateData[key] === '') {
+            delete updateData[key];
+        }
+    });
+
+    // 닉네임과 이메일 중복 체크
+    if (existsNickname && updateData.nickName) {
         return res.status(400).json({
-            msg: "중복된 닉네임이 있습니다"
-        })
+            msg: "중복된 닉네임이 있습니다."
+        });
     }
-    if (existsEmail) {
+    if (existsEmail && updateData.email) {
         return res.status(401).json({
-            msg: "중복된 이메일이 있습니다"
-        })
+            msg: "중복된 이메일이 있습니다."
+        });
     }
 
-    const authUpdate = await Auth.findByIdAndUpdate(id, {
-        avatar, nickName, email, name
-    }, {
-        runValidators: true, // default 유효성 검사
-        new: true
-    })
-    console.log('updata', authUpdate)
-    return res.status(200).json(authUpdate);
-}
+    try {
+        const authUpdate = await Auth.findByIdAndUpdate(id, updateData, { new: true });
+        console.log('update', authUpdate);
+        return res.status(200).json(authUpdate);
+    } catch (error) {
+        // 에러 처리
+        console.error(error);
+        return res.status(500).json({ msg: "서버 오류가 발생했습니다." });
+    }
+};
