@@ -69,8 +69,12 @@ export const authEdit = async (req, res) => {
         file
     } = req;
     const id = req.userId;
-    let updateData = req.body;
-
+    let updateData = {
+        avatar: file ? file.path : avatar,
+        nickName,
+        email,
+        name
+}
     const existsNickname = await Auth.exists({ nickName });
     const existsEmail = await Auth.exists({ email });
 
