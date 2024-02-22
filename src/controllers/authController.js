@@ -74,7 +74,7 @@ export const authEdit = async (req, res) => {
         nickName,
         email,
         name
-}
+    }
     const existsNickname = await Auth.exists({ nickName });
     const existsEmail = await Auth.exists({ email });
 
