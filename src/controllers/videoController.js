@@ -26,8 +26,9 @@ export const videoUpload = async (req, res) => {
         videoUrl: file ? file.path : videoUrl,
         owner: id,
     });
-    auth.videos = createVideo;
-    auth.save();
+    auth.videos.push(createVideo)
+    await auth.save();
+    console.log('createVideo', createVideo)
     return res.status(200).json(createVideo);
 }
 
@@ -52,3 +53,12 @@ export const videoViews = async (req, res) => {
     return res.sendStatus(200);
 }
 
+export const viewBestApi = async (req, res) => {
+    try {
+        const videos = await Video.find({}).populate('owner').sort({ 'meta.views': -1 });
+        return res.status(200).json(videos);
+    } catch (error) {
+        console.error('Error fetching best videos:', error);
+        return res.status(500).json({ message: 'Server error' });
+    }
+}
