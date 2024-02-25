@@ -36,3 +36,19 @@ export const getVideos = async (req, res) => {
     console.log('videos', videos);
     return res.status(200).json(videos);
 };
+
+export const videoViews = async (req, res) => {
+    const { id } = req.params;
+    console.log('id', id)
+
+    const video = await Video.findById(id);
+    console.log('video', video)
+
+    // if (!video) {
+    //     return res.status(404);
+    // }
+    video.meta.views = video.meta.views + 1;
+    await video.save();
+    return res.sendStatus(200);
+}
+
